@@ -1,16 +1,21 @@
 package de.sb.radio.persistence;
 
 import javax.persistence.Column;
+import javax.validation.constraints.Size;
 
-public class Track extends BaseEntity{
-	char[] name = new char[128];
-	char[] Artist = new char[128];
-	char[] genre = new char[31];
+public class Track extends BaseEntity {
+	@Size(max=127,min=1)
+	private String name;
+	@Size(max=127,min=1)
+	private String Artist;
+	@Size(max=31,min=1)
+	private String genre;
 	@Column(nullable = true, updatable = true)
-	Album album ; 
+	private Album album;
 	@Column(nullable = true, updatable = true)
-	Person owner;
+	private Person owner;
 	@Column(nullable = false, updatable = true)
-	Document recording  ;
-
+	private Document recording;
 }
+
+
