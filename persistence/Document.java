@@ -1,8 +1,7 @@
 package de.sb.radio.persistence;
 
-public class Document extends BaseEntity{
-	
- char[] hash = new char[64];
- byte[] content = new byte[16777215];
- 
+public class Document extends BaseEntity {
+	private String hash;
+	private String type;
+	private Byte[] content;
 }
