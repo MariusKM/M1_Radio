@@ -1,41 +1,87 @@
 package de.sb.radio.persistence;
 
-import javax.persistence.Column;
-
-public class Person extends BaseEntity {
-
-	static public enum Group {
-		USER, ADMIN
-	};
+public class Person {
+	private String email;
+	private String passwordHash;
+	private Document avatar;
+	
+	public Name getName() {
+		return null;
+	}
+	
+	public Group getGroup() {
+		return null;
+	}
 	
 	public class Name {
-		char[] family = new char[31];;
-		char[] given = new char[31];;
-
+		private String family;
+		private String given;
+		
+		public Name(String family, String given) {
+			this.family = family;
+			this.given = given;
+		}
+		
+		public Name(Name other) {
+			this.family = other.family;
+			this.given = other.given;
+		}
+		
+		public String getFamily() {
+			return family;
+		}
+		
+		public void setFamily(String family) {
+			this.family = family;
+		}
+		
+		public String getGiven() {
+			return given;
+		}
+		
+		public void setGiven(String given) {
+			this.given = given;
+		}	
 	}
 	
 	public class Address {
-		char[] street = new char[63];;
-		char[] postcode = new char[15];;
-		char[] city = new char[64];
+		private String street;
+		private String postcode;
+		private String city;
+		
+		public Address(String street, String postcode, String city) {
+			super();
+			this.street = street;
+			this.postcode = postcode;
+			this.city = city;
+		}
 
-	}
-    
-	static Group myGroup;
-	@Column(nullable = true, updatable = true)
-	char[] email = new char[128];
-	char[] passwordHash = new char[64];
-	@Column(nullable = true, updatable = true)
-	Document avatar = null;
-    static Name myName;
-
-
-	public Group getGroup() {
-		return this.myGroup;
+		public String getStreet() {
+			return street;
+		}
+		
+		public void setStreet(String street) {
+			this.street = street;
+		}
+		
+		public String getPostcode() {
+			return postcode;
+		}
+		
+		public void setPostcode(String postcode) {
+			this.postcode = postcode;
+		}
+		
+		public String getCity() {
+			return city;
+		}
+		public void setCity(String city) {
+			this.city = city;
+		}
 	}
 	
-	public Name getName() {
-		return this.myName;
-			
+	public enum Group {
+		ADMIN,
+		USER,
 	}
 }
