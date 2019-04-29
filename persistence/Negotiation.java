@@ -1,8 +1,20 @@
 package de.sb.radio.persistence;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
+
+@Embeddable
+
 public class Negotiation {
+	
+	@Embedded
 	private String offer;
+	
+	@Embedded
 	private String answer;
+	
+	@Embedded
 	private Long timestamp;
 	
 	public String getOffer() {

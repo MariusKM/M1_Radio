@@ -1,7 +1,18 @@
 package de.sb.radio.persistence;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
+
+@Embeddable
+
 public class Name {
+	
+	@Embedded
 	private String family;
+	
+	
+	@Embedded
 	private String given;
 	
 	public Name(String family, String given) {

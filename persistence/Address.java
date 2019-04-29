@@ -1,8 +1,21 @@
 package de.sb.radio.persistence;
 
+
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
+
+@Embeddable
+
 public class Address {
+	
+	@Embedded
 	private String street;
+	
+	@Embedded
 	private String postcode;
+	
+	@Embedded
 	private String city;
 	
 	public Address(String street, String postcode, String city) {
