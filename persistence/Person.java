@@ -21,10 +21,10 @@ public class Person extends BaseEntity {
 	
 	private Name name;	//@size
 	
-	
+	@Embedded
 	private Address address;
 	
-	
+	@Embedded
 	private Negotiation negotiation;
 	
 	@Column(nullable = true, updatable = true)
