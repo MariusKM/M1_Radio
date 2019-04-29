@@ -1,8 +1,9 @@
 package de.sb.radio.persistence;
 
-import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,12 +12,14 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -29,22 +32,6 @@ public class Person extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private long personIdentity;
 	
-	@Embedded
-	@NotNull
-	private Name name;
-	
-	@Embedded
-	@NotNull
-	private Address address;
-	
-	@Embedded
-	@Null
-	private Negotiation negotiation;	// in DB columns direkt in Person, keine Referenz, warum?
-	
-	@Enumerated(STRING)
-	@NotNull
-	private Group group;
-	
 	@Column(nullable = false, updatable = true)		// public setter Methoden??
 	@NotNull @NotEmpty @Size(min=1, max=128) @Email
 	private String email;
@@ -53,18 +40,46 @@ public class Person extends BaseEntity {
 	@NotNull @Size(min=64, max=64)
 	private String passwordHash;
 	
-	@Embedded
+	@Enumerated(STRING)
 	@NotNull
-	private Document avatar;
+	private Group group;
 	
 	@Embedded
 	@NotNull
+	@Valid
+	private Name name;
+	
+	@Embedded
+	@NotNull
+	@Valid
+	private Address address;
+	
+	@Embedded
+	@Valid
+	private Negotiation negotiation;
+	
+	@NotNull
+	@ManyToOne private Document avatar;
+	
+	@NotNull
+	@OneToMany(mappedBy="person")
 	private Set<Track> tracks;
 	
-	public Person() {
-		// sachen initialisieren
+	protected Person() {
+		this("", "", new Name(), new Address());
 	}
-	
+
+	public Person(String email, String passwordHash, Name name, Address address) {
+		super();
+		this.email = email;
+		this.passwordHash = passwordHash;
+		this.group = Group.USER;
+		this.name = name;
+		this.address = address;
+		this.avatar = new Document(); 
+		this.tracks = Collections.emptySet();
+	}
+
 	public Name getName() {
 		return null;
 	}

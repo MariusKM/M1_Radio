@@ -32,6 +32,12 @@ public class Document extends BaseEntity {
 	@Column(nullable = false, updatable = false, insertable = true)
 	@NotNull @NotEmpty @Size(min=1, max=16777215)
 	private String type;
+	
+	protected Document() {
+		this.hash = "";
+		this.content = new byte[16777215];
+		this.type = "";
+	}
 
 	public String getHash() {
 		return hash;

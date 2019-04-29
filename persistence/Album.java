@@ -2,12 +2,16 @@ package de.sb.radio.persistence;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -36,13 +40,22 @@ public class Album extends BaseEntity {
 	@NotNull @PositiveOrZero
 	private int trackCount;
 	
-	@Column(nullable = false, updatable = false, insertable = true)
 	@NotNull 
+	@ManyToOne
+	@JoinColumn(name="documentIdentity")
 	private Document cover;
 	
-	@Column(nullable = false, updatable = false, insertable = true)
 	@NotNull
+	@OneToMany(mappedBy="album")
 	private Set<Track> tracks;
+	
+	protected Album() {
+		this.title = "";
+		this.releaseYear = 0;
+		this.trackCount = 0;
+		this.cover = new Document();
+		this.tracks = Collections.emptySet();
+	}
 
 	public String getTitle() {
 		return title;

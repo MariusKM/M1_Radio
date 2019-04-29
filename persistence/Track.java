@@ -3,10 +3,11 @@ package de.sb.radio.persistence;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -34,18 +35,29 @@ public class Track extends BaseEntity {
 	@NotNull @NotEmpty @Size(min=1,max=31)
 	private String genre;
 	
-	@Embedded
 	@NotNull 
+	@ManyToOne
+	@JoinColumn(name="albumIdentity")	// referencedColumnName="albumReference" ?
 	private Album album;
 	
-	@Embedded
 	@NotNull 
+	@ManyToOne
+	@JoinColumn(name="personIdentity")
 	private Person owner;
 	
-	@Embedded
 	@NotNull 
+	@ManyToOne
+	@JoinColumn(name="documentIdentity")
 	private Document recording;
 
+	protected Track() {
+		this.name = "";
+		this.artist = "";
+		this.genre = "";
+		this.album = new Album();
+		this.owner = new Person();
+	}
+	
 	public int getTrackIdentity() {
 		return trackIdentity;
 	}

@@ -1,7 +1,7 @@
 package de.sb.radio.persistence;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -9,15 +9,15 @@ import javax.validation.constraints.Size;
 @Embeddable
 public class Negotiation {
 	
-	@Embedded
+	@Column(name = "negotiationOffer", nullable = false, updatable = true)
 	@Null @Size(min=0, max=2046)
 	private String offer;
 	
-	@Embedded
+	@Column(name = "negotiationAnswer", nullable = false, updatable = true)
 	@Null @Size(min=0, max=2046)
 	private String answer;
-	
-	@Embedded
+
+	@Column(name = "negotiationTimestamp", nullable = false, updatable = true)
 	@Null @Past
 	private Long timestamp;
 	

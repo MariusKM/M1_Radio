@@ -1,7 +1,7 @@
 package de.sb.radio.persistence;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -9,11 +9,11 @@ import javax.validation.constraints.Size;
 @Embeddable
 public class Name {
 	
-	@Embedded
+	@Column(name = "surname", nullable = false, updatable = true)
 	@NotNull @NotEmpty @Size(min=1, max=31)
 	private String surname;
 	
-	@Embedded
+	@Column(name = "forename", nullable = false, updatable = true)
 	@NotNull @NotEmpty @Size(min=1, max=31)
 	private String forename;
 	
