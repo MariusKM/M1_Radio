@@ -1,5 +1,12 @@
 package de.sb.radio.persistence;
 
+
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
+
+@Embeddable
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -7,10 +14,16 @@ import javax.validation.constraints.Size;
 
 public class Address {
 	@NotNull @NotEmpty @Size(min=0, max=63)
+	
+	@Embedded
 	private String street;
 	@NotNull @NotEmpty @Size(min=0, max=15) @Positive
+	
+	@Embedded
 	private String postcode;
 	@NotNull @NotEmpty @Size(min=1, max=63)
+	
+	@Embedded
 	private String city;
 	
 	public Address(String street, String postcode, String city) {
