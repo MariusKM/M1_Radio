@@ -9,9 +9,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 
-@Entity
-@Table(schema = "radio", name = "Person")
-@PrimaryKeyJoinColumn(name="personIdentity")
+
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -20,13 +18,15 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+
+@Entity
+@Table(schema = "radio", name = "Person")
+@PrimaryKeyJoinColumn(name="personIdentity")
+
 public class Person extends BaseEntity {
 	
 	
 	private int personIdentity;
-	
-	
-	private Name name;	//@size
 	
 	@Embedded
 	@NotNull @Max(1)	// do all of these get Min(1) as well?
