@@ -2,48 +2,34 @@ package de.sb.radio.persistence;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-
-
-@Embeddable
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Embeddable
 public class Name {
 	
 	@Embedded
 	@NotNull @NotEmpty @Size(min=1, max=31)
-	private String family;
-	
+	private String surname;
 	
 	@Embedded
 	@NotNull @NotEmpty @Size(min=1, max=31)
-	private String given;
+	private String forename;
 	
-	public Name(String family, String given) {
-		this.family = family;
-		this.given = given;
+	public String getSurname() {
+		return surname;
 	}
 	
-	public Name(Name other) {
-		this.family = other.family;
-		this.given = other.given;
+	protected void setSurname(String surname) {
+		this.surname = surname;
 	}
 	
-	public String getFamily() {
-		return family;
+	public String getForename() {
+		return forename;
 	}
 	
-	public void setFamily(String family) {
-		this.family = family;
-	}
-	
-	public String getGiven() {
-		return given;
-	}
-	
-	public void setGiven(String given) {
-		this.given = given;
+	protected void setForename(String forename) {
+		this.forename = forename;
 	}	
 }

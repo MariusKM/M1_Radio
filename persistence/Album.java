@@ -1,90 +1,86 @@
 package de.sb.radio.persistence;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.validation.constraints.Size;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(schema = "radio", name = "Album")
 @PrimaryKeyJoinColumn(name="albumIdentity")
-
-
 public class Album extends BaseEntity {
-
 	
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	private int albumIdentity;
 	
-	@Embedded
-	@Size(max = 127, min = 0)
+	@Column(nullable = false, updatable = false, insertable = true)
+	@NotNull @Size(min=0,max=127)
 	private String title;
 	
+	@Column(nullable = false, updatable = false, insertable = true)
+	@NotNull @Positive
+	private int releaseYear;
 	
-	@Column(nullable = true, updatable = true)
-	private short releaseYear;
+	@Column(nullable = false, updatable = false, insertable = true)
+	@NotNull @PositiveOrZero
+	private int trackCount;
 	
-	
-	@Column(nullable = true, updatable = true)
-	private Byte trackCount;
-	
-	
-	@Column(nullable = true, updatable = true)
+	@Column(nullable = false, updatable = false, insertable = true)
+	@NotNull 
 	private Document cover;
 	
-	
-	@Column(nullable = true, updatable = true)
+	@Column(nullable = false, updatable = false, insertable = true)
+	@NotNull
 	private Set<Track> tracks;
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String Title) {
+	protected void setTitle(String Title) {
 		this.title = Title;
 	}
 
-	public short getReleaseYear() {
+	public int getReleaseYear() {
 		return releaseYear;
 	}
 
-	protected void setReleaseYear(short releaseYear) {
+	protected void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
 	}
 	
-	public Byte getTrackCount() {
+	public int getTrackCount() {
 		return trackCount;
 	}
 	
-	protected void setTrackCount(byte trackCount) {
-		
+	protected void setTrackCount(int trackCount) {
 		this.trackCount = trackCount;	
 	}
 	
 	public Document getCover() {
-		
 		return cover;
 	}
 	
 	protected void setCover(Document cover) {
-		
 		this.cover = cover;
-		
 	}
 	
 	public Set<Track> getTracks(){
-		
 		return tracks;
-		
 	}
 	
 	protected void setTracks(Set<Track> tracks) {
-		
 	  this.tracks = tracks;
-		
 	}
 }
