@@ -1,7 +1,13 @@
 package de.sb.radio.persistence;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Name {
+	@NotNull @NotEmpty @Size(min=1, max=31)
 	private String family;
+	@NotNull @NotEmpty @Size(min=1, max=31)
 	private String given;
 	
 	public Name(String family, String given) {
