@@ -2,6 +2,15 @@ package de.sb.radio.persistence;
 
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
+
+
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -9,25 +18,54 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+
+@Entity
+@Table(schema = "radio", name = "Person")
+@PrimaryKeyJoinColumn(name="personIdentity")
+
 public class Person extends BaseEntity {
+	
+	
+	private int personIdentity;
+	
+	@Embedded
 	@NotNull @Max(1)	// do all of these get Min(1) as well?
 	private Name name;
 	@NotNull @Max(1)
 	private Address address;
+	
+	@Embedded
 	@NotNull @Min(0) @Max(1)
 	private Negotiation negotiation;
+	
+	@Column(nullable = true, updatable = true)
+	private String negotiationOffer;
+	
+	@Column(nullable = true, updatable = true)
+	private String negotiationAnswer;
+	
+	@Column(nullable = false, updatable = true)
+	private Group groupAlias;
+	
+	@Column(nullable = false, updatable = true)
 	@NotNull @Max(1)
 	private Group group;
 	@NotNull @NotEmpty @Size(min=1, max=128) @Email
 	private String email;
+	
+	@Column(nullable = false, updatable = true)
 	@NotNull @Size(min=64, max=64) // must be a typo right?
 	private String passwordHash;
+	
+	@Embedded
 	@Min(0) @Max(1)
 	private Document avatar;
+	
+	@Embedded
 	private Set<Track> tracks;
 	
 	public Person() {
-		// sachen initialieren
+		// sachen initialisieren
 	}
 	
 	public Name getName() {
@@ -83,7 +121,7 @@ public class Person extends BaseEntity {
 	}
 	
 	protected void setGroup(Group group) {
-		this.group = group;
+		this.groupAlias = group;
 	}
 	
 	public enum Group {

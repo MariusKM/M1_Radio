@@ -1,54 +1,33 @@
 package de.sb.radio.persistence;
 
-public class Document extends BaseEntity {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(schema = "radio", name = "Document")
+@PrimaryKeyJoinColumn(name="documentIdentity")
+
+
+public class Document extends BaseEntity{
+	
+	
+	private int documentIdentity;
+	
+	@Column(nullable = false, updatable = true)
 	private String hash;
+	
+	@Column(nullable = false, updatable = false, insertable = true)
 	private byte[] content;
-	private String type;
-
-	public Document() {
-
-	}
-
-	/**
-	 * @return the hash
-	 */
-	public String getHash() {
-		return hash;
-	}
-
-	/**
-	 * @param hash the hash to set
-	 */
-	protected void setHash(String hash) {
-		this.hash = hash;
-	}
-
-	/**
-	 * @return the content
-	 */
-	public byte[] getContent() {
-		return content;
-	}
-
-	/**
-	 * @param content the content to set
-	 */
-	protected void setContent(byte[] content) {
-		this.content = content;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	protected void setType(String type) {
-		this.type = type;
-	}
-
+	
+	@Column(nullable = false, updatable = false, insertable = true)
+    private String type;
+    
+    
+	
+	//char[] hash = new char[64];
+    // byte[] content = new byte[16777215];
+ 
 }
