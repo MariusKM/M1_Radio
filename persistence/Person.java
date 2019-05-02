@@ -1,71 +1,85 @@
 package de.sb.radio.persistence;
 
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
-
-
-
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Entity
 @Table(schema = "radio", name = "Person")
 @PrimaryKeyJoinColumn(name="personIdentity")
-
 public class Person extends BaseEntity {
 	
+	// ist das �berhaupt notwendig, trotz identity in BaseIdentity
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	private long personIdentity;
 	
-	@Embedded
-	@NotNull @Max(1)	// do all of these get Min(1) as well?
-	private Name name;
-	@NotNull @Max(1)
-	private Address address;
-	
-	@Embedded
-	@NotNull @Min(0) @Max(1)
-	private Negotiation negotiation;
-	
-	@Column(nullable = true, updatable = true)
-	private String negotiationOffer;
-	
-	@Column(nullable = true, updatable = true)
-	private String negotiationAnswer;
-	
-	@Column(nullable = false, updatable = true)
-	private Group groupAlias;
-	
-	@Column(nullable = false, updatable = true)
-	@NotNull @Max(1)
-	private Group group;
+	@Column(nullable = false, updatable = true)		// public setter Methoden??
 	@NotNull @NotEmpty @Size(min=1, max=128) @Email
 	private String email;
 	
 	@Column(nullable = false, updatable = true)
-	@NotNull @Size(min=64, max=64) // must be a typo right?
+	@NotNull @Size(min=64, max=64)
 	private String passwordHash;
 	
-	@Embedded
-	@Min(0) @Max(1)
-	private Document avatar;
+	@Enumerated(STRING)
+	@NotNull
+	private Group group;
 	
 	@Embedded
+	@NotNull
+	@Valid
+	private Name name;
+	
+	@Embedded
+	@NotNull
+	@Valid
+	private Address address;
+	
+	@Embedded
+	@Valid
+	private Negotiation negotiation;
+	
+	@NotNull
+	@ManyToOne private Document avatar;
+	
+	@NotNull
+	@OneToMany(mappedBy="person")
 	private Set<Track> tracks;
 	
-	public Person() {
-		// sachen initialisieren
+	protected Person() {
+		this("", "", new Name(), new Address());
 	}
-	
+
+	public Person(String email, String passwordHash, Name name, Address address) {
+		super();
+		this.email = email;
+		this.passwordHash = passwordHash;
+		this.group = Group.USER;
+		this.name = name;
+		this.address = address;
+		this.avatar = new Document(); 
+		this.tracks = Collections.emptySet();
+	}
+
 	public Name getName() {
 		return null;
 	}
@@ -94,7 +108,7 @@ public class Person extends BaseEntity {
 		return email;
 	}
 
-	protected void setEmail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -119,9 +133,19 @@ public class Person extends BaseEntity {
 	}
 	
 	protected void setGroup(Group group) {
-		this.groupAlias = group;
+		this.group = group;
 	}
 	
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+
+	// hier auch nochmal @enumerated?
 	public enum Group {
 		ADMIN,
 		USER,

@@ -1,59 +1,37 @@
 package de.sb.radio.persistence;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 @Embeddable
 
-public class Name implements Comparable<Name> {
+@Embeddable
+public class Name {
 	
-	@Embedded
+	@Column(name = "surname", nullable = false, updatable = true)
 	@NotNull @NotEmpty @Size(min=1, max=31)
-	private String family;
+	private String surname;
 	
-	
-	@Embedded
+	@Column(name = "forename", nullable = false, updatable = true)
 	@NotNull @NotEmpty @Size(min=1, max=31)
-	private String given;
+	private String forename;
 	
-	public Name(String family, String given) {
-		this.family = family;
-		this.given = given;
+	public String getSurname() {
+		return surname;
 	}
 	
-	public Name(Name other) {
-		this.family = other.family;
-		this.given = other.given;
+	protected void setSurname(String surname) {
+		this.surname = surname;
 	}
 	
-	public String getFamily() {
-		return family;
+	public String getForename() {
+		return forename;
 	}
 	
-	public void setFamily(String family) {
-		this.family = family;
-	}
-	
-	public String getGiven() {
-		return given;
-	}
-	
-	public void setGiven(String given) {
-		this.given = given;
-	}
-
-	@Override
-	public int compareTo(Name o) {
-		// TODO Auto-generated method stub
-		int result =  this.getFamily().compareTo(o.getFamily());
-		return (result == 0)? this.getGiven().compareTo(o.getGiven()): result;
-	}
-	
-	public int compareGivenTo(Name o) {
-		// TODO Auto-generated method stub
-		return this.getGiven().compareTo(o.getGiven()) ;
+	protected void setForename(String forename) {
+		this.forename = forename;
 	}	
 	
 	public int compareFamilyTo(Name o) {

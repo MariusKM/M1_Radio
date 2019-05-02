@@ -1,33 +1,24 @@
 package de.sb.radio.persistence;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 @Embeddable
-public class Address implements Comparable<Address> {
-	@NotNull
-	@NotEmpty
-	@Size(min = 0, max = 63)
-
-	@Embedded
+public class Address {
+	
+	@Column(name = "street", nullable = false, updatable = true)
+	@NotNull @Size(min=0, max=63)
 	private String street;
-	@NotNull
-	@NotEmpty
-	@Size(min = 0, max = 15)
-	@Positive
-
-	@Embedded
+	
+	@Column(name = "postcode", nullable = false, updatable = true)
+	@NotNull @Size(min=0, max=15)
 	private String postcode;
-	@NotNull
-	@NotEmpty
-	@Size(min = 1, max = 63)
-
-	@Embedded
+	
+	@Column(name = "city", nullable = false, updatable = true)
+	@NotNull @NotEmpty @Size(min=1, max=63)	// warum hier nicht auch min=0?
 	private String city;
 
 	public Address(String street, String postcode, String city) {
@@ -40,24 +31,24 @@ public class Address implements Comparable<Address> {
 	public String getStreet() {
 		return street;
 	}
-
-	public void setStreet(String street) {
+	
+	protected void setStreet(String street) {
 		this.street = street;
 	}
 
 	public String getPostcode() {
 		return postcode;
 	}
-
-	public void setPostcode(String postcode) {
+	
+	protected void setPostcode(String postcode) {
 		this.postcode = postcode;
 	}
 
 	public String getCity() {
 		return city;
 	}
-
-	public void setCity(String city) {
+	
+	protected void setCity(String city) {
 		this.city = city;
 	}
 
