@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import de.sb.Copyright;
 import de.sb.radio.net.JsonProtectedPropertyStrategy;
 import de.sb.radio.net.XmlLongToStringAdapter;
+import java.util.Comparator;
 
 
 /**

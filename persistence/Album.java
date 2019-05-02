@@ -1,5 +1,6 @@
 package de.sb.radio.persistence;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -39,6 +40,18 @@ public class Album extends BaseEntity {
 	
 	@Column(nullable = true, updatable = true)
 	private Set<Track> tracks;
+	
+	public Album (String title, short releaseYear, byte TrackCount) {
+		
+		super();
+		this.title = title;
+		this.releaseYear = releaseYear;
+		this.trackCount = TrackCount;
+		this.tracks = new HashSet<Track>(); 
+		
+		
+	}
+	
 
 	public String getTitle() {
 		return title;

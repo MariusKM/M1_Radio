@@ -2,15 +2,12 @@ package de.sb.radio.persistence;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-
-
-@Embeddable
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+@Embeddable
 
-public class Name {
+public class Name implements Comparable<Name> {
 	
 	@Embedded
 	@NotNull @NotEmpty @Size(min=1, max=31)
@@ -45,5 +42,22 @@ public class Name {
 	
 	public void setGiven(String given) {
 		this.given = given;
+	}
+
+	@Override
+	public int compareTo(Name o) {
+		// TODO Auto-generated method stub
+		int result =  this.getFamily().compareTo(o.getFamily());
+		return (result == 0)? this.getGiven().compareTo(o.getGiven()): result;
+	}
+	
+	public int compareGivenTo(Name o) {
+		// TODO Auto-generated method stub
+		return this.getGiven().compareTo(o.getGiven()) ;
+	}	
+	
+	public int compareFamilyTo(Name o) {
+		// TODO Auto-generated method stub
+		return this.getFamily().compareTo(o.getFamily()) ;
 	}	
 }

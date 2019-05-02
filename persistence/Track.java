@@ -40,6 +40,16 @@ public class Track extends BaseEntity {
 	
 	@Column(nullable = false, updatable = true)
 	private Document recording;
+	
+	
+	
+	public Track(String name, String Artist, Document recording) {
+		
+		super();
+		this.name = name; 
+		this.Artist = Artist;
+		this.recording = recording;
+	}
 }
 
 

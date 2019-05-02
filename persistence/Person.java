@@ -26,8 +26,6 @@ import javax.validation.constraints.Size;
 public class Person extends BaseEntity {
 	
 	
-	private int personIdentity;
-	
 	@Embedded
 	@NotNull @Max(1)	// do all of these get Min(1) as well?
 	private Name name;
