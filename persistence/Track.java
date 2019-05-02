@@ -115,8 +115,7 @@ public class Track extends BaseEntity {
 	}
 	
 	
-	@Column(nullable = false, updatable = true)
-	private Document recording;
+
 	
 	
 	
@@ -124,7 +123,7 @@ public class Track extends BaseEntity {
 		
 		super();
 		this.name = name; 
-		this.Artist = Artist;
+		this.artist = Artist;
 		this.recording = recording;
 	}
 }

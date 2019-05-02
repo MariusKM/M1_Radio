@@ -3,6 +3,7 @@ package de.sb.radio.persistence;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -56,8 +57,7 @@ public class Album extends BaseEntity {
 		this.cover = new Document();
 		this.tracks = Collections.emptySet();
 	}
-	@Column(nullable = true, updatable = true)
-	private Set<Track> tracks;
+	
 	
 	public Album (String title, short releaseYear, byte TrackCount) {
 		

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Embeddable
-public class Address {
+public class Address implements Comparable<Address> {
 	
 	@Column(name = "street", nullable = false, updatable = true)
 	@NotNull @Size(min=0, max=63)
@@ -26,6 +26,11 @@ public class Address {
 		this.street = street;
 		this.postcode = postcode;
 		this.city = city;
+	}
+	
+	protected Address() {
+		
+		
 	}
 
 	public String getStreet() {

@@ -7,8 +7,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 @Embeddable
 
-@Embeddable
-public class Name {
+
+public class Name implements Comparable<Name> {
 	
 	@Column(name = "surname", nullable = false, updatable = true)
 	@NotNull @NotEmpty @Size(min=1, max=31)
@@ -34,8 +34,20 @@ public class Name {
 		this.forename = forename;
 	}	
 	
+	@Override
+	public int compareTo(Name o) {
+		// TODO Auto-generated method stub
+		int result =  this.getSurname().compareTo(o.getSurname());
+		return (result == 0)? this.getForename().compareTo(o.getForename()): result;
+	}
+	
+	public int compareGivenTo(Name o) {
+		// TODO Auto-generated method stub
+		return this.getForename().compareTo(o.getForename()) ;
+	}	
+	
 	public int compareFamilyTo(Name o) {
 		// TODO Auto-generated method stub
-		return this.getFamily().compareTo(o.getFamily()) ;
+		return this.getSurname().compareTo(o.getSurname()) ;
 	}	
 }

@@ -7,7 +7,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 @Embeddable
-public class Negotiation {
+public class Negotiation implements Comparable<Negotiation>  {
 	
 	@Column(name = "negotiationOffer", nullable = false, updatable = true)
 	@Null @Size(min=0, max=2046)
