@@ -1,15 +1,11 @@
 package de.sb.radio.persistence;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -25,57 +21,35 @@ import javax.validation.constraints.Size;
 @PrimaryKeyJoinColumn(name="albumIdentity")
 public class Album extends BaseEntity {
 	
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	private int albumIdentity;
-	
-	@Column(nullable = false, updatable = false, insertable = true)
+	@Column(nullable = false, updatable = true)
 	@NotNull @Size(min=0,max=127)
 	private String title;
 	
-	@Column(nullable = false, updatable = false, insertable = true)
+	@Column(nullable = false, updatable = true)
 	@NotNull @Positive
 	private int releaseYear;
 	
-	@Column(nullable = false, updatable = false, insertable = true)
+	@Column(nullable = false, updatable = true)
 	@NotNull @PositiveOrZero
 	private int trackCount;
 	
-	@NotNull 
-	@ManyToOne
-	@JoinColumn(name="documentIdentity")
+	@ManyToOne(optional = true)
+	@JoinColumn(name="coverReference", nullable = true, updatable = true)
 	private Document cover;
 	
 	@NotNull
-	@OneToMany(mappedBy="album")
+	@OneToMany(mappedBy="album", cascade = { CascadeType.REFRESH, CascadeType.REMOVE })
 	private Set<Track> tracks;
 	
-	protected Album() {
-		this.title = "";
-		this.releaseYear = 0;
-		this.trackCount = 0;
-		this.cover = new Document();
+	public Album() {
 		this.tracks = Collections.emptySet();
 	}
 	
-	
-	public Album (String title, short releaseYear, byte TrackCount) {
-		
-		super();
-		this.title = title;
-		this.releaseYear = releaseYear;
-		this.trackCount = TrackCount;
-		this.tracks = new HashSet<Track>(); 
-		
-		
-	}
-	
-
 	public String getTitle() {
 		return title;
 	}
 
-	protected void setTitle(String Title) {
+	public void setTitle(String Title) {
 		this.title = Title;
 	}
 
@@ -83,7 +57,7 @@ public class Album extends BaseEntity {
 		return releaseYear;
 	}
 
-	protected void setReleaseYear(int releaseYear) {
+	public void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
 	}
 	
@@ -91,7 +65,7 @@ public class Album extends BaseEntity {
 		return trackCount;
 	}
 	
-	protected void setTrackCount(int trackCount) {
+	public void setTrackCount(int trackCount) {
 		this.trackCount = trackCount;	
 	}
 	
@@ -99,7 +73,7 @@ public class Album extends BaseEntity {
 		return cover;
 	}
 	
-	protected void setCover(Document cover) {
+	public void setCover(Document cover) {
 		this.cover = cover;
 	}
 	
@@ -107,7 +81,7 @@ public class Album extends BaseEntity {
 		return tracks;
 	}
 	
-	protected void setTracks(Set<Track> tracks) {
+	public void setTracks(Set<Track> tracks) {
 	  this.tracks = tracks;
 	}
 }

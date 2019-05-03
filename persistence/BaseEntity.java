@@ -2,6 +2,7 @@ package de.sb.radio.persistence;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.InheritanceType.JOINED;
+
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbVisibility;
 import javax.persistence.Column;
@@ -16,10 +17,10 @@ import javax.validation.constraints.Positive;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import de.sb.Copyright;
 import de.sb.radio.net.JsonProtectedPropertyStrategy;
 import de.sb.radio.net.XmlLongToStringAdapter;
-import java.util.Comparator;
 
 
 /**

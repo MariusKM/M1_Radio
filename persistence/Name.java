@@ -1,21 +1,23 @@
 package de.sb.radio.persistence;
 
+import java.util.Comparator;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 @Embeddable
 
 
 public class Name implements Comparable<Name> {
+	static private final Comparator<Name> COMPARATOR = Comparator.comparing(Name::getSurname).thenComparing(Name::getForename);
 	
-	@Column(name = "surname", nullable = false, updatable = true)
-	@NotNull @NotEmpty @Size(min=1, max=31)
+	@Column(nullable = false, updatable = true)
+	@NotNull @Size(min=1, max=31)
 	private String surname;
 	
-	@Column(name = "forename", nullable = false, updatable = true)
-	@NotNull @NotEmpty @Size(min=1, max=31)
+	@Column(nullable = false, updatable = true)
+	@NotNull @Size(min=1, max=31)
 	private String forename;
 	
 	public String getSurname() {
@@ -35,19 +37,7 @@ public class Name implements Comparable<Name> {
 	}	
 	
 	@Override
-	public int compareTo(Name o) {
-		// TODO Auto-generated method stub
-		int result =  this.getSurname().compareTo(o.getSurname());
-		return (result == 0)? this.getForename().compareTo(o.getForename()): result;
-	}
-	
-	public int compareGivenTo(Name o) {
-		// TODO Auto-generated method stub
-		return this.getForename().compareTo(o.getForename()) ;
-	}	
-	
-	public int compareFamilyTo(Name o) {
-		// TODO Auto-generated method stub
-		return this.getSurname().compareTo(o.getSurname()) ;
+	public int compareTo(Name other) {
+		return COMPARATOR.compare(this, other);		// so für jedes composite
 	}	
 }

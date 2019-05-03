@@ -1,24 +1,24 @@
 package de.sb.radio.persistence;
 
 import static javax.persistence.EnumType.STRING;
-import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Collections;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,14 +26,15 @@ import javax.validation.constraints.Size;
 @Table(schema = "radio", name = "Person")
 @PrimaryKeyJoinColumn(name="personIdentity")
 public class Person extends BaseEntity {
+	static private final String DEFAULT_PASSWORD_HASH = HashTools.sha256HashText("password");
+
+	static public enum Group {
+		USER,
+		ADMIN
+	}
 	
-	// ist das �berhaupt notwendig, trotz identity in BaseIdentity
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	private long personIdentity;
-	
-	@Column(nullable = false, updatable = true)		// public setter Methoden??
-	@NotNull @NotEmpty @Size(min=1, max=128) @Email
+	@Column(nullable = false, updatable = true)
+	@NotNull @Size(min=1, max=128) @Email
 	private String email;
 	
 	@Column(nullable = false, updatable = true)
@@ -41,6 +42,7 @@ public class Person extends BaseEntity {
 	private String passwordHash;
 	
 	@Enumerated(STRING)
+	@Column(name = "groupAlias", nullable = false, updatable = true)
 	@NotNull
 	private Group group;
 	
@@ -56,27 +58,28 @@ public class Person extends BaseEntity {
 	
 	@Embedded
 	@Valid
+	@AttributeOverrides({
+		@AttributeOverride(name = "offer", column = @Column(name = "negotiationOffer")),
+		@AttributeOverride(name = "answer", column = @Column(name = "negotiationAnswer")),
+		@AttributeOverride(name = "timestamp", column = @Column(name = "negotiationTimestamp")),		
+	})
 	private Negotiation negotiation;
 	
-	@NotNull
-	@ManyToOne private Document avatar;
+	// bei Relationen auf der * Seite kein NotNull
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "avatarReference", nullable = false, updatable = true)	//immer bei manytoone
+	private Document avatar;
 	
 	@NotNull
-	@OneToMany(mappedBy="person")
+	@OneToMany(mappedBy="owner", cascade = { CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH })
 	private Set<Track> tracks;
-	
-	protected Person() {
-		this("", "", new Name(), new Address());
-	}
 
-	public Person(String email, String passwordHash, Name name, Address address) {
+	public Person() {
 		super();
-		this.email = email;
-		this.passwordHash = passwordHash;
+		this.passwordHash = DEFAULT_PASSWORD_HASH;
 		this.group = Group.USER;
-		this.name = name;
-		this.address = address;
-		this.avatar = new Document(); 
+		this.name = new Name();
+		this.address = new Address();
 		this.tracks = Collections.emptySet();
 	}
 
@@ -100,7 +103,7 @@ public class Person extends BaseEntity {
 		return negotiation;
 	}
 
-	protected void setNegotiation(Negotiation negotiation) {
+	public void setNegotiation(Negotiation negotiation) {
 		this.negotiation = negotiation;
 	}
 
@@ -116,7 +119,7 @@ public class Person extends BaseEntity {
 		return avatar;
 	}
 
-	protected void setAvatar(Document avatar) {
+	public void setAvatar(Document avatar) {
 		this.avatar = avatar;
 	}
 
@@ -124,12 +127,8 @@ public class Person extends BaseEntity {
 		return tracks;
 	}
 
-	protected void setTracks(Set<Track> tracks) {
-		this.tracks = tracks;
-	}
-
 	public Group getGroup() {
-		return null;
+		return group;
 	}
 	
 	protected void setGroup(Group group) {
@@ -142,12 +141,5 @@ public class Person extends BaseEntity {
 
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
-	}
-
-
-	// hier auch nochmal @enumerated?
-	public enum Group {
-		ADMIN,
-		USER,
 	}
 }

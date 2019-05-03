@@ -2,23 +2,20 @@ package de.sb.radio.persistence;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 @Embeddable
 public class Negotiation implements Comparable<Negotiation>  {
 	
-	@Column(name = "negotiationOffer", nullable = false, updatable = true)
-	@Null @Size(min=0, max=2046)
+	@Column(nullable = true, updatable = true)
+	@Size(min=0, max=2046)
 	private String offer;
 	
-	@Column(name = "negotiationAnswer", nullable = false, updatable = true)
-	@Null @Size(min=0, max=2046)
+	@Column(nullable = true, updatable = true)
+	@Size(min=0, max=2046)
 	private String answer;
 
-	@Column(name = "negotiationTimestamp", nullable = false, updatable = true)
-	@Null @Past
+	@Column(nullable = true, updatable = true)
 	private Long timestamp;
 
 	public String getOffer() {
@@ -44,6 +41,8 @@ public class Negotiation implements Comparable<Negotiation>  {
 	protected void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
+	
+	// COMPARATOR, timestamp first, null comparator
 
 	@Override
 	public int compareTo(Negotiation o) {
