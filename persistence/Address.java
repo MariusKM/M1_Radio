@@ -29,7 +29,9 @@ public class Address implements Comparable<Address> {
 	}
 	
 	protected Address() {
-		
+		this.street = "";
+		this.postcode = "";
+		this.city = "";
 		
 	}
 
